@@ -1,2 +1,2 @@
-# ArchivingFiles
-The repo consists scripts for archiving old files stored by Telnyx
+# Archiving Files
+The repo consists of scripts for archiving old files stored by Telnyx
