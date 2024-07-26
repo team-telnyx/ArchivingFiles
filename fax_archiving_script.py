@@ -25,8 +25,7 @@ def download_file(url, filename):
     if response.status_code == 200:
         with open(filename, 'wb') as file:
             for chunk in response.iter_content(chunk_size=8192):
-                file.write(chunk)
-        print(filename)       
+                file.write(chunk)    
         return filename
     else:
         print(f"Failed to download file: {response.status_code}")
@@ -79,7 +78,6 @@ while(True):
     total_pages = response['meta']['total_pages']
 
     for fax in response['data']:
-        print(fax)
         if(fax['direction'] == 'inbound'):
             archive_inbound_fax(fax)
         else:
