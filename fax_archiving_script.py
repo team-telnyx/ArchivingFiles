@@ -11,9 +11,8 @@ REGION='REGION_FOR_YOUR_BUCKET'
 URL=  f'https://{REGION}.telnyxstorage.com'
 
 def get_faxes(page=1):
-    date_to = datetime.datetime.now().date()
     date_from = (datetime.datetime.now() + datetime.timedelta(days=-30)).date()
-    endpoint = f'https://api.telnyx.com/v2/faxes?filter[created_at][lte]={date_to}T00%3A00%3A00Z&page[number]={page}'
+    endpoint = f'https://api.telnyx.com/v2/faxes?filter[created_at][gte]={date_from}T00%3A00%3A00Z&page[number]={page}'
     headers = {'Content-Type': 'application/json',
                'Authorization' : f'Bearer {API_KEY}'}
 
@@ -59,17 +58,17 @@ def upload_to_s3(file_name):
 def archive_fax(url, id, preview = False):
     file_name = download_file(url, f"Preview_{id}" if preview else f"Fax_{id}")
     upload_to_s3(file_name)
+    os.remove(file_name)
 
 def archive_inbound_fax(fax):
     if('media_url' in fax):
         archive_fax(fax['media_url'], fax['id'])   
 
 def archive_outbound_fax(fax):
-    if('stored_url' in fax):
-        archive_fax(fax['stored_url'], fax['id']) 
+    if('stored_media_url' in fax):
+        archive_fax(fax['stored_media_url'], fax['id']) 
     if('preview_url' in fax):
         archive_fax(fax['preview_url'], fax['id'], True) 
-
 
 page_no = 1
 
