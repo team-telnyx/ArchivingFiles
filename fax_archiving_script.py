@@ -2,6 +2,7 @@ import boto3
 import requests
 import json
 import datetime
+from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 
 client = boto3.client('s3')
 
@@ -74,6 +75,13 @@ page_no = 1
 
 while(True):
     response = get_faxes(page_no)
+    
+    if response is None: 
+        break 
+    if not response["data"]:
+        print("No faxes found.")
+        break
+
     total_pages = response['meta']['total_pages']
 
     for fax in response['data']:
