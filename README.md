@@ -23,6 +23,7 @@ In the script, specify the following details:
 
 4. **Install Dependencies:**
 Install the required boto3 library using pip:  
+
 ```bash
   pip install boto3
 ```
